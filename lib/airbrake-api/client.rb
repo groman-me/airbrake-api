@@ -12,12 +12,14 @@ module AirbrakeAPI
     PARALLEL_WORKERS = 10
 
     attr_accessor *AirbrakeAPI::Configuration::VALID_OPTIONS_KEYS
+    attr_reader :failed_notices
 
     def initialize(options={})
       attrs = AirbrakeAPI.options.merge(options)
       AirbrakeAPI::Configuration::VALID_OPTIONS_KEYS.each do |key|
         send("#{key}=", attrs[key])
       end
+      @failed_notices = []
     end
 
     def url_for(endpoint, *args)
@@ -113,6 +115,7 @@ module AirbrakeAPI
 
       notices = []
       page_count = 0
+      @failed_notices = []
       while !options[:pages] || (page_count + 1) <= options[:pages]
         data = request(:get, notices_path(error_id), :page => page + page_count)
 
@@ -121,7 +124,11 @@ module AirbrakeAPI
         else
           # get info like backtraces by doing another api call to notice
           Parallel.map(data.notices, :in_threads => PARALLEL_WORKERS) do |notice_stub|
-            notice(notice_stub.id, error_id)
+            begin
+              notice(notice_stub.id, error_id)
+            rescue => e
+              @failed_notices << { notice_id: notice_stub.id, error_id: error_id, error: e}
+            end
           end
         end
         yield batch if block_given?
