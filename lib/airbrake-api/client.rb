@@ -127,10 +127,14 @@ module AirbrakeAPI
             begin
               notice(notice_stub.id, error_id)
             rescue => e
-              @failed_notices << { notice_id: notice_stub.id, error_id: error_id, error: e}
+              @failed_notices << { :notice_id => notice_stub.id,
+                                   :error_id => error_id, :exception => e}
+              :rescued
             end
           end
         end
+        batch.delete :rescued
+
         yield batch if block_given?
         batch.each{|n| notices << n }
 

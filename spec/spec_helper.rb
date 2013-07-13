@@ -42,6 +42,9 @@ fixture_request :get, "http://myapp.airbrake.io/groups/1696171/notices.xml?auth_
 fixture_request :get, "http://myapp.airbrake.io/groups/1696171/notices.xml?auth_token=abcdefg123456&page=3", 'paginated_notices.xml'
 fixture_request :get, "http://myapp.airbrake.io/groups/1696171/notices/1234.xml?auth_token=abcdefg123456", 'notices.xml'
 fixture_request :get, "http://myapp.airbrake.io/groups/1696172/notices.xml?auth_token=abcdefg123456&page=1", 'unauthorized.xml'
+fixture_request :get, "http://myapp.airbrake.io/groups/1696173/notices.xml?auth_token=abcdefg123456&page=1", 'raw_notices_with_link_to_broken.xml'
+fixture_request :get, "http://myapp.airbrake.io/groups/1696173/notices/1234.xml?auth_token=abcdefg123456", 'notice_with_broken_format.xml'
+fixture_request :get, "http://myapp.airbrake.io/groups/1696173/notices/1235.xml?auth_token=abcdefg123456", 'individual_notice.xml'
 
 # projects
 fixture_request :get, "http://myapp.airbrake.io/data_api/v1/projects.xml?auth_token=abcdefg123456", 'projects.xml'

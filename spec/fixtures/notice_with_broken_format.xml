@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+
+<?xml version="1.0" encoding="UTF-8"?>
+<notices type="array">
+  <notice>
+    <created-at type="datetime">2010-05-25T01:30:58Z</created-at>
+    <error-message>NoMethodError: undefined method `oh_no_not_that' for nil:NilClass</error-message>
+    <group-id type="integer">1696170</group-id>
+    <id type="integer">1234</id>
+    <project-id type="integer">248</project-id>
+    <updated-at type="datetime">2010-05-25T01:30:58Z</updated-at>

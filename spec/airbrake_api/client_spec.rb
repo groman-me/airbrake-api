@@ -185,6 +185,21 @@ describe AirbrakeAPI::Client do
         notices.first.backtrace.should == nil
         notices.first.id.should == 1234
       end
+
+      context 'when some notice raised exception during fetching' do
+        it 'excludes failed notice' do
+          @client.notices(1696173).should == [@client.notice(1235, 1696173)]
+        end
+
+        it 'add failed notice to #failed_notices' do
+          @client.notices(1696173)
+          failed_notices = @client.failed_notices
+          failed_notices.size.should == 1
+          failed_notices.first[:notice_id].should == 1234
+          failed_notices.first[:error_id] = 1696173
+          failed_notices.first[:exception].should be_is_a(StandardError)
+        end
+      end
     end
 
     describe '#connection' do
